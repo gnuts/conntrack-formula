@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# !!! THIS FILE IS MANAGED BY SALT !!!
+# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+#
+# conntrack-mode        This shell script switches mode of the conntrack-daemon.
+#                       It is operated by heartbeat.
+
+start() {
+        # Switch to primary mode
+        echo -n $"Switching to primary mode..."
+        /etc/heartbeat/resource.d/primary-backup primary
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ]
+        return $RETVAL
+}
+
+stop() {
+        # Switch to backup mode
+        echo -n $"Switching to backup mode..."
+        /etc/heartbeat/resource.d/primary-backup backup
+        RETVAL=$?
+        echo
+        [ $RETVAL -eq 0 ]
+        return $RETVAL
+}
+
+# See how we were called.
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop}"
+        exit 2
+esac

@@ -1,0 +1,8 @@
+{% set map = salt['grains.filter_by']({
+  'Debian': {
+    'pkgs': [ 'conntrackd', 'conntrack' ],
+    'servicename': 'conntrackd',
+    'sysctlservicename': 'procps',
+    'confdir': '/etc/conntrack',
+},
+}, grain='os', merge=salt['pillar.get']('conntrack:lookup')) %}

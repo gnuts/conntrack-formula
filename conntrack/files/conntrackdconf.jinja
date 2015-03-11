@@ -1,0 +1,47 @@
+#
+# !!! THIS FILE IS MANAGED !!!
+# !!! CHANGES WILL BE LOST !!!
+#
+
+Sync {
+	Mode FTFW {
+	}
+	UDP {
+    IPv4_address {{ address }}
+    IPv4_Destination_Address {{ destinationaddress }}
+		Interface {{ interface }}
+		Port 3780
+		SndSocketBuffer 1249280
+		RcvSocketBuffer 1249280
+		Checksum on
+	}
+}
+
+General {
+	Nice -20
+	HashSize 32768
+	HashLimit 131072
+	LogFile on
+	LockFile /var/lock/conntrack.lock
+	UNIX {
+		Path /var/run/conntrackd.ctl
+		Backlog 20
+	}
+	NetlinkBufferSize 2097152
+	NetlinkBufferSizeMaxGrowth 8388608
+	Filter From Userspace {
+		Protocol Accept {
+			TCP
+			SCTP
+			DCCP
+		}
+		Address Ignore {
+			IPv4_address 127.0.0.1 # loopback
+      IPv4_address {{ address }}
+      IPv4_address {{ destination }}
+      {%- for addr in ignore %}
+      IPv4_address {{ addr }}
+      {%- endfor %}
+		}
+	}
+}
