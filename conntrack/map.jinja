@@ -6,5 +6,6 @@
     'confdir': '/etc/conntrackd',
     'lockfile': '/var/lock/conntrack.lock',
     'unixpath': '/var/run/conntrackd.ctl',
+    'resourcepath': '/etc/heartbeat/resource.d',
 },
 }, grain='os', merge=salt['pillar.get']('conntrack:lookup')) %}
