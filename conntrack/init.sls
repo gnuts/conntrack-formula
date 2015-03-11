@@ -1,10 +1,10 @@
-{% from "heartbeat/map.jinja" import map with context %}
+{% from "conntrack/map.jinja" import map with context %}
 
 conntrack_packages:
   pkg.installed:
     - pkgs:
       {% for pkg in map.pkgs %}
-      - {{pkg }}
+      - {{ pkg }}
       {% endfor %}
 
 conntrack_conntrackdconf:
@@ -20,10 +20,12 @@ conntrack_conntrackdconf:
       destination: {{ pillar.conntrack.get('destination', 'NOT CONFIGURED') }}
       interface:   {{ pillar.conntrack.get('interface', 'eth0') }}
       ignore:      {{ pillar.conntrack.get('ignore', []) }}
+      lockfile:    {{ map.lockfile }}
+      unixpath:    {{ map.unixpath }}
 
-reload_conntrackd:
+restart_conntrackd:
   cmd.wait:
-    - name: /etc/init.d/{{map.servicename}} reload
+    - name: /etc/init.d/{{map.servicename}} restart
     - watch:
       - file: /etc/conntrackd/conntrackd.conf
 

@@ -3,6 +3,8 @@
     'pkgs': [ 'conntrackd', 'conntrack' ],
     'servicename': 'conntrackd',
     'sysctlservicename': 'procps',
-    'confdir': '/etc/conntrack',
+    'confdir': '/etc/conntrackd',
+    'lockfile': '/var/lock/conntrack.lock',
+    'unixpath': '/var/run/conntrackd.ctl',
 },
 }, grain='os', merge=salt['pillar.get']('conntrack:lookup')) %}
